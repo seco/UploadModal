@@ -1,9 +1,26 @@
-﻿@{
+﻿@model UploadModal.ViewModel.HomeViewModel
+@{
     ViewBag.Title = "Home Page";
 }
-
 <h2>@ViewBag.Message</h2>
 <p>
-    To learn more about ASP.NET MVC visit <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
+    To view or get the source, visit <a href="https://github.com/eryckson/UploadModal" title="Github">
+        eryckson/UploadModal</a> on Github.
 </p>
-@Html.Action("Index", "Upload")
+@if (Model.UrlPhoto == null)
+{   
+    <img alt="" src="@Url.Content("~/Content/img/nophoto.png")" height="300" width="300" class="border_image" />   
+    <p>
+        @Html.Action("Index", "Upload", new { rotulo = (Model.UrlPhoto == null) ? "New Photo" : "Alter Photo" })
+    </p>
+}
+else
+{
+    <img alt="" src="@Url.Content(Model.UrlPhoto)" height="300" width="300" class="border_image" />    
+    <p>
+        @Html.Action("Index", "Upload", new { rotulo = (Model.UrlPhoto == null) ? "New Photo" : "Alter Photo" })
+    </p>
+    <p>
+        @Html.ActionLink("Remove Photo", "Remove")
+    </p>
+}

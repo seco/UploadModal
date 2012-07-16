@@ -19,6 +19,7 @@
 <script src="@Url.Content("~/Content/jcrop/jquery.Jcrop.min.js")" type="text/javascript"></script>
 <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<a href="#" id="jc-hidden-btn">@Model.Rotulo</a>
 <div style="display: none;" id="jc-hidden-dialog">
     @*<form id="fileupload" action="/Upload/UploadHandler.ashx" method="POST" enctype="multipart/form-data">*@
     <form id="fileupload" action="@Url.Action("UploadFiles", "Upload", null)" method="POST" enctype="multipart/form-data">
@@ -31,16 +32,16 @@
                 <input type="file" name="files[]">
             </span>
             <button type="submit" class="btn btn-primary start" style="display: none">
-                <i class="icon-upload icon-white"></i><span>Iniciar Upload</span>
+                <i class="icon-upload icon-white"></i><span>Start Upload</span>
             </button>
             <button type="reset" class="btn btn-warning cancel" style="display: none">
-                <i class="icon-ban-circle icon-white"></i><span>Cancelar Upload</span>
+                <i class="icon-ban-circle icon-white"></i><span>Cancel Upload</span>
             </button>
             <button type="button" class="btn btn-danger delete" disabled="disabled">
-                <i class="icon-trash icon-white"></i><span>Remover foto</span>
+                <i class="icon-trash icon-white"></i><span>Remove photo</span>
             </button>
             <button id="concluir_row" type="submit" class="btn btn-primary start">
-                <i class="icon-upload icon-white"></i><span>Concluir</span>
+                <i class="icon-upload icon-white"></i><span>Finish</span>
             </button>
             @*<input type="checkbox" class="toggle">*@
         </div>
@@ -123,16 +124,7 @@
         {% } else { %}
             <td class="preview">{% if (file.thumbnail_url) { %}
                 <!--<a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"></a>-->
-                    
-<input type="hidden" id="_Top" value="{%=file.Top%}" />
-<input type="hidden" id="_Left" value="{%=file.Left%}" />
-<input type="hidden" id="_Bottom" value="{%=file.Bottom%}" />
-<input type="hidden" id="_Right" value="{%=file.Right%}" />
-<input type="hidden" id="_Height" value="{%=file.Height%}" />
-<input type="hidden" id="_Width" value="{%=file.Width%}" />
-
-<input type="hidden" id="targetFileName" value="{%=file.name%}" />
-
+                <input type="hidden" id="targetFileName" value="{%=file.name%}" />
                 <table>
                     <tr>
                         <td>
@@ -281,4 +273,3 @@
     });
 
 </script>
-<a href="#" id="jc-hidden-btn">Alterar Foto</a> 

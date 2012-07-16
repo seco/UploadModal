@@ -14,6 +14,7 @@ namespace UploadModal.ViewModel
         public string delete_url { get; set; }
         public string thumbnail_url { get; set; }
         public string delete_type { get; set; }
+        public string error { get; set; }
 
         public double Top { get; set; }
         public double Bottom { get; set; }

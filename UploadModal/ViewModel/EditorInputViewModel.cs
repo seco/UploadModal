@@ -14,5 +14,6 @@ namespace UploadModal.ViewModel
         public double Width { get; set; }
         public double Height { get; set; }
         public string Imagem { get; set; }
+        public string Rotulo { get; set; }
     }
 }

@@ -6,11 +6,14 @@ using System.Web.Mvc;
 using System.IO;
 using UploadModal.ViewModel;
 using System.Web.Helpers;
+using System.Text;
 
 namespace UploadModal.Controllers
 {
     public class UploadController : Controller
     {
+        private readonly int MAX_SIZE_ALLOWED = 5120000; // for validation on IE
+
         private string StorageRoot
         {
             get { return Path.Combine(Server.MapPath("~/Images/Original/")); }
@@ -21,13 +24,21 @@ namespace UploadModal.Controllers
             get { return Path.Combine(Server.MapPath("~/Images/Cropped/")); }
         }
 
-        public ActionResult Index()
+        public ActionResult Index(string rotulo = "Alter photo")
         {
-            return PartialView();
+            EditorInputViewModel editor = new EditorInputViewModel
+            {
+                Rotulo = rotulo
+            };
+
+            return PartialView(editor);
         }
 
         public ActionResult Edit(EditorInputViewModel editor)
         {
+            // cleaning directory just for demonstrations
+            foreach (var f in Directory.GetFiles(StorageCrop)) System.IO.File.Delete(f);
+
             var image = new WebImage(StorageRoot + editor.Imagem);
 
             int _height = (int)editor.Height;
@@ -49,13 +60,15 @@ namespace UploadModal.Controllers
             }
 
             var originalFile = editor.Imagem;
-            editor.Imagem = Url.Content(StorageCrop + Path.GetFileName(image.FileName));
-            image.Resize(150, 150, true, false);
+
+            var name = "profile-c" + Path.GetExtension(image.FileName);
+
+            editor.Imagem = Url.Content(StorageCrop + name);
             image.Save(editor.Imagem);
 
-            //System.IO.File.Delete(Server.MapPath(originalFile));
+            System.IO.File.Delete(Url.Content(StorageRoot + originalFile));
 
-            return View("Index", editor);
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -174,11 +187,19 @@ namespace UploadModal.Controllers
             {
                 var file = request.Files[i];
 
-                var fullPath = Path.Combine(StorageRoot, Path.GetFileName(file.FileName));
+                var fullPath = Path.Combine(StorageRoot, Normalize(Path.GetFileName(file.FileName)));
 
-                file.SaveAs(fullPath);
+                string err = null;
 
-                var image = new WebImage(StorageRoot + file.FileName);
+                if (file.ContentLength > MAX_SIZE_ALLOWED)
+                {
+                    err = "File too big";
+                }
+                else
+                {
+                    //var image = new WebImage(StorageRoot + file.FileName);
+                    file.SaveAs(fullPath);
+                }
 
                 statuses.Add(new UploadFilesResultViewModel()
                 {
@@ -189,15 +210,19 @@ namespace UploadModal.Controllers
                     delete_url = "/Upload/Delete/" + file.FileName,
                     thumbnail_url = @"data:image/png;base64," + EncodeFile(fullPath),
                     delete_type = "GET",
-
-                    Width = image.Width,
-                    Height = image.Height,
-                    Top = image.Height * 0.1,
-                    Left = image.Width * 0.9,
-                    Right = image.Width * 0.9,
-                    Bottom = image.Height * 0.9
+                    error = err
                 });
             }
+        }
+
+        private string Normalize(string input)
+        {
+            string normalized = input.Normalize(NormalizationForm.FormKD);
+            Encoding removal = Encoding.GetEncoding(Encoding.ASCII.CodePage,
+                                                    new EncoderReplacementFallback(""),
+                                                    new DecoderReplacementFallback(""));
+            byte[] bytes = removal.GetBytes(normalized);
+            return Encoding.ASCII.GetString(bytes);
         }
     }
 }

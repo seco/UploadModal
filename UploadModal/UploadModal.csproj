@@ -71,6 +71,7 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\EditorInputViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\UploadFilesResultViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,6 +93,7 @@
     <Content Include="Content\img\generalFile.png" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\img\nophoto.png" />
     <Content Include="Content\img\progressbar.gif" />
     <Content Include="Content\jcrop\Jcrop.gif" />
     <Content Include="Content\jcrop\jquery.Jcrop.css" />
@@ -167,6 +169,13 @@
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <None Include="_bin_deployableAssemblies\Microsoft.Web.Infrastructure.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.WebPages.Razor.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.WebPages.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.WebPages.Deployment.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.Razor.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.Helpers.dll" />
+    <None Include="_bin_deployableAssemblies\System.Web.Mvc.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
